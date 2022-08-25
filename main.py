@@ -7,6 +7,7 @@ from io import BytesIO
 import random
 import os
 from dotenv import load_dotenv
+import pickle
 
 load_dotenv('config.env')
 Bearer = 'Bearer ' + os.getenv('HEADER')
@@ -16,8 +17,13 @@ data = requests.get('https://api.github.com/repos/cat-milk/Anime-Girls-Holding-P
 ghJson = data.json()
 folders = []
 
+with open('output.pickle', 'wb') as output:
+    pickle.dump(folders, output)
 
-for x in ghJson:
+inputFile = open('output.pickle', 'rb')
+ghInput = pickle.load(inputFile)
+
+for x in ghInput:
     if not x['path'].__contains__("."):
         data2 = requests.get(x['url'], headers=headers)
         ghJson2 = data2.json()
