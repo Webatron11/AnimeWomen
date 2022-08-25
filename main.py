@@ -7,14 +7,29 @@
 from PIL import Image
 import requests
 from io import BytesIO
-import json
+import random
+import os
+from dotenv import load_dotenv
 
-data = requests.request('GET', ' https://api.github.com/repos/cat-milk/Anime-Girls-Holding-Programming-Books/contents/')
+load_dotenv('config.env')
+Bearer = 'Bearer ' + os.getenv('HEADER')
+headers = {'Authorization': Bearer}
+
+data = requests.get('https://api.github.com/repos/cat-milk/Anime-Girls-Holding-Programming-Books/contents/', headers=headers)
 ghJson = data.json()
-ghPlain = json.load(ghJson)
+folders = []
 
-url = \
-    'https://raw.githubusercontent.com/cat-milk/Anime-Girls-Holding-Programming-Books/master/C/Shalltear_Overlord_Holding_C_Programming_Language.png'
+
+for x in ghJson:
+    if not x['path'].__contains__("."):
+        data2 = requests.get(x['url'], headers=headers)
+        ghJson2 = data2.json()
+        for x2 in ghJson2:
+            folders.append(x2["download_url"])
+
+print(len(folders))
+
+url = folders[random.randint(0, len(folders)-1)]
 
 response = requests.get(url)
 img = Image.open(BytesIO(response.content))
