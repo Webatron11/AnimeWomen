@@ -1,7 +1,4 @@
-# https://gist.github.com/slavakurilyak/d3418446179f98cde5b7d6b53eefa09d
-
 # https://github.com/cat-milk/Anime-Girls-Holding-Programming-Books
-
 # https://stackoverflow.com/questions/63252337/how-to-open-and-display-images-from-a-github-repository#
 
 from PIL import Image
@@ -26,8 +23,6 @@ for x in ghJson:
         ghJson2 = data2.json()
         for x2 in ghJson2:
             folders.append(x2["download_url"])
-
-print(len(folders))
 
 url = folders[random.randint(0, len(folders)-1)]
 
